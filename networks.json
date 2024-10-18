@@ -1,0 +1,8 @@
+{
+  "mainnet": {
+    "GdnRegistrar": {
+      "address": "0xDF2B54545d2b5A1482acF61FF44853ebFfd0e66A",
+      "startBlock": 20864555
+    }
+  }
+}
