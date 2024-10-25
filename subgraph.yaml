@@ -19,7 +19,7 @@ dataSources:
         - Approval
         - ApprovalForAll
         - NftAction
-        - OwnershipTransferred
+        - GdnRegistrarOwnershipTransferred
         - Transfer
       abis:
         - name: GdnRegistrar
@@ -36,3 +36,55 @@ dataSources:
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleTransfer
       file: ./src/gdn-registrar.ts
+  - kind: ethereum
+    name: GdnRegistrationService
+    network: mainnet
+    source:
+      address: "0x261C34A098545229d4435e1361F4944ec47737dB"
+      abi: GdnRegistrationService
+      startBlock: 20874841
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - LabelAction
+        - GdnRegistrationServiceOwnershipTransferred
+        - Withdrawn
+      abis:
+        - name: GdnRegistrationService
+          file: ./abis/GdnRegistrationService.json
+      eventHandlers:
+        - event: LabelAction(string,indexed address,uint256,string,uint256,string,uint256)
+          handler: handleLabelAction
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: Withdrawn(indexed address,uint256)
+          handler: handleWithdrawn
+      file: ./src/gdn-registration-service.ts
+  - kind: ethereum
+    name: GdnPaymentReceiver
+    network: mainnet
+    source:
+      address: "0xFB5dF5Bb520F7CD2952BFAC090130446cF8f176C"
+      abi: GdnPaymentReceiver
+      startBlock: 20864555
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - GdnPaymentReceiverOwnershipTransferred
+        - PaymentReceived
+        - GdnPaymentReceiverWithdrawn
+      abis:
+        - name: GdnPaymentReceiver
+          file: ./abis/GdnPaymentReceiver.json
+      eventHandlers:
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: PaymentReceived(indexed address,uint256,string)
+          handler: handlePaymentReceived
+        - event: Withdrawn(indexed address,uint256)
+          handler: handleWithdrawn
+      file: ./src/gdn-payment-receiver.ts

@@ -3,6 +3,14 @@
     "GdnRegistrar": {
       "address": "0xDF2B54545d2b5A1482acF61FF44853ebFfd0e66A",
       "startBlock": 20864555
+    },
+    "GdnRegistrationService": {
+      "address": "0x261C34A098545229d4435e1361F4944ec47737dB",
+      "startBlock": 20874841
+    },
+    "GdnPaymentReceiver": {
+      "address": "0xFB5dF5Bb520F7CD2952BFAC090130446cF8f176C",
+      "startBlock": 20864555
     }
   }
 }

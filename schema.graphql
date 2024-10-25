@@ -1,4 +1,6 @@
-type Approval @entity(immutable: true) {
+# GdnRegistrar
+
+type Event_GdnRegistrarApproval @entity(immutable: true) {
   id: Bytes!
   owner: Bytes! # address
   approved: Bytes! # address
@@ -8,7 +10,7 @@ type Approval @entity(immutable: true) {
   transactionHash: Bytes!
 }
 
-type ApprovalForAll @entity(immutable: true) {
+type Event_GdnRegistrarApprovalForAll @entity(immutable: true) {
   id: Bytes!
   owner: Bytes! # address
   operator: Bytes! # address
@@ -18,7 +20,7 @@ type ApprovalForAll @entity(immutable: true) {
   transactionHash: Bytes!
 }
 
-type NftAction @entity(immutable: true) {
+type Event_GdnRegistrarNftAction @entity(immutable: true) {
   id: Bytes!
   labelAction: Int! # uint8
   label: String! # string
@@ -29,7 +31,7 @@ type NftAction @entity(immutable: true) {
   transactionHash: Bytes!
 }
 
-type OwnershipTransferred @entity(immutable: true) {
+type Event_GdnRegistrarOwnershipTransferred @entity(immutable: true) {
   id: Bytes!
   previousOwner: Bytes! # address
   newOwner: Bytes! # address
@@ -38,7 +40,7 @@ type OwnershipTransferred @entity(immutable: true) {
   transactionHash: Bytes!
 }
 
-type Transfer @entity(immutable: true) {
+type Event_GdnRegistrarTransfer @entity(immutable: true) {
   id: Bytes!
   from: Bytes! # address
   to: Bytes! # address
@@ -46,4 +48,78 @@ type Transfer @entity(immutable: true) {
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
+}
+
+# GdnRegistrationService
+type Event_GdnRegistrationServiceLabelAction @entity(immutable: true) {
+  id: Bytes!
+  label: String! # string
+  userAddress: Bytes! # address
+  expiry: BigInt! # uint256
+  action: String! # string
+  timestamp: BigInt! # uint256
+  orderId: String! # string
+  amountPaid: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Event_GdnRegistrationServiceOwnershipTransferred @entity(immutable: true) {
+  id: Bytes!
+  previousOwner: Bytes! # address
+  newOwner: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Event_GdnRegistrationServiceWithdrawn @entity(immutable: true) {
+  id: Bytes!
+  beneficiary: Bytes! # address
+  amount: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+# GdnPaymentReceiver
+type Event_GdnPaymentReceiverOwnershipTransferred @entity(immutable: true) {
+  id: Bytes!
+  previousOwner: Bytes! # address
+  newOwner: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Event_GdnPaymentReceiverPaymentReceived @entity(immutable: true) {
+  id: Bytes!
+  payer: Bytes! # address
+  amount: BigInt! # uint256
+  orderId: String! # string
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Event_GdnPaymentReceiverWithdrawn @entity(immutable: true) {
+  id: Bytes!
+  beneficiary: Bytes! # address
+  amount: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Payment @entity {
+  id: Bytes!
+
+}
+
+type Label @entity {
+  id: Bytes!
+  label: String
+  owner: Bytes! # address
+  previousOwners: [Bytes!]!
 }
