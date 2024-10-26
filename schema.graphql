@@ -114,12 +114,31 @@ type Event_GdnPaymentReceiverWithdrawn @entity(immutable: true) {
 
 type Payment @entity {
   id: Bytes!
-
 }
 
-type Label @entity {
+type DomainNft @entity {
   id: Bytes!
+  tokenId: BigInt!
   label: String
+  owner: Bytes!
+  mintedBlockNumber: BigInt!
+  mintedTimestamp: BigInt!
+  burnedBlockNumber: BigInt
+  burnedTimestamp: BigInt
+  ownerHistoryEntries: [DomainNftOwnerHistoryEntry!] @derivedFrom(field: "domainNft")
+}
+
+type DomainNftOwnerHistoryEntry @entity(immutable: true) {
+  id: Bytes!
+  owner: Bytes! # address
+  blockNumber: BigInt!
+  timestamp: BigInt!
+  domainNft: DomainNft!
+}
+
+type DomainLabel @entity {
+  id: Bytes!
+  label: String!
   owner: Bytes! # address
   previousOwners: [Bytes!]!
 }
