@@ -112,10 +112,6 @@ type Event_GdnPaymentReceiverWithdrawn @entity(immutable: true) {
   transactionHash: Bytes!
 }
 
-type Payment @entity {
-  id: Bytes!
-}
-
 type LabelNft @entity {
   id: Bytes!
   tokenId: BigInt!
@@ -147,7 +143,7 @@ type Label @entity {
   createdTimestamp: BigInt!
   createdBlockNumber: BigInt!
   previousOwners: [LabelOwnerHistoryEntry!] @derivedFrom(field: "label")
-  renewals: [LabelRenewal!] @derivedFrom(field: "label")
+  actions: [LabelAction!] @derivedFrom(field: "label")
 }
 
 type LabelOwnerHistoryEntry @entity(immutable: true) {
@@ -158,10 +154,23 @@ type LabelOwnerHistoryEntry @entity(immutable: true) {
   label: Label!
 }
 
-type LabelRenewal @entity(immutable: true) {
+type LabelAction @entity(immutable: true) {
   id: Bytes!
+  action: String!
   expiry: BigInt!
+  orderId: String!
+  user: Bytes!
+  amountPaid: BigInt!
+
   timestamp: BigInt!
   blockNumber: BigInt!
+
   label: Label!
+}
+
+type Payment @entity(immutable: true){
+  id: Bytes!
+  amount: BigInt!
+  orderId: String!
+  payer: Bytes! # address
 }

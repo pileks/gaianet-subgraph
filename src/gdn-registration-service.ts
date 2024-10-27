@@ -1,3 +1,4 @@
+import { Bytes } from "@graphprotocol/graph-ts";
 import {
   LabelAction as LabelActionEvent,
   OwnershipTransferred as OwnershipTransferredEvent,
@@ -7,7 +8,9 @@ import {
   Event_GdnRegistrationServiceLabelAction,
   Event_GdnRegistrationServiceOwnershipTransferred,
   Event_GdnRegistrationServiceWithdrawn,
+  LabelAction,
 } from "../generated/schema";
+import { toBytes } from "./utils";
 
 export function handleLabelAction(event: LabelActionEvent): void {
   let entity = new Event_GdnRegistrationServiceLabelAction(
@@ -26,6 +29,24 @@ export function handleLabelAction(event: LabelActionEvent): void {
   entity.transactionHash = event.transaction.hash;
 
   entity.save();
+
+  const id = Bytes.fromUTF8(event.params.label).concat(
+    toBytes(event.params.expiry)
+  );
+  const renewal = new LabelAction(id);
+
+  renewal.blockNumber = event.block.number;
+  renewal.timestamp = event.block.timestamp;
+
+  renewal.action = event.params.action;
+  renewal.expiry = event.params.expiry;
+  renewal.orderId = event.params.orderId;
+  renewal.user = event.params.userAddress;
+  renewal.amountPaid = event.params.amountPaid;
+
+  renewal.label = Bytes.fromUTF8(event.params.label);
+  
+  renewal.save();
 }
 
 export function handleOwnershipTransferred(

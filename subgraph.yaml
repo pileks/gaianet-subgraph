@@ -75,7 +75,7 @@ dataSources:
       language: wasm/assemblyscript
       entities:
         - GdnPaymentReceiverOwnershipTransferred
-        - PaymentReceived
+        - GdnPaymentReceiverPaymentReceived
         - GdnPaymentReceiverWithdrawn
       abis:
         - name: GdnPaymentReceiver

@@ -1,3 +1,4 @@
+import { Bytes } from "@graphprotocol/graph-ts";
 import {
   OwnershipTransferred as OwnershipTransferredEvent,
   PaymentReceived as PaymentReceivedEvent,
@@ -7,6 +8,7 @@ import {
   Event_GdnPaymentReceiverOwnershipTransferred,
   Event_GdnPaymentReceiverPaymentReceived,
   Event_GdnPaymentReceiverWithdrawn,
+  Payment,
 } from "../generated/schema";
 
 export function handleOwnershipTransferred(
@@ -38,6 +40,14 @@ export function handlePaymentReceived(event: PaymentReceivedEvent): void {
   entity.transactionHash = event.transaction.hash;
 
   entity.save();
+
+  let payment = new Payment(Bytes.fromUTF8(event.params.orderId));
+
+  payment.amount = event.params.amount;
+  payment.payer = event.params.payer;
+  payment.orderId = event.params.orderId;
+
+  payment.save();
 }
 
 export function handleWithdrawn(event: WithdrawnEvent): void {

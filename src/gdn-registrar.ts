@@ -16,10 +16,8 @@ import {
   Event_GdnRegistrarTransfer,
   Label,
   LabelOwnerHistoryEntry,
-  LabelRenewal,
 } from "../generated/schema";
 import { decodeTokenId, toBytes } from "./utils";
-import { log } from "matchstick-as";
 
 export function handleApproval(event: ApprovalEvent): void {
   let entity = new Event_GdnRegistrarApproval(
@@ -65,37 +63,6 @@ export function handleNftAction(event: NftActionEvent): void {
   entity.transactionHash = event.transaction.hash;
 
   entity.save();
-
-  switch (event.params.labelAction) {
-    case 1:
-      // Mint - tracked and assigned in Transfer event
-      break;
-    case 2:
-      const id = Bytes.fromUTF8(event.params.label).concat(
-        toBytes(event.params.expiry)
-      );
-      const renewal = new LabelRenewal(id);
-
-      renewal.blockNumber = event.block.number;
-      renewal.timestamp = event.block.timestamp;
-      renewal.expiry = event.params.expiry;
-      renewal.label = Bytes.fromUTF8(event.params.label);
-
-      renewal.save();
-
-      // const label = getOrCreateLabel(event.params.label, event.block);
-
-      // label.expiry = event.params.expiry;
-
-      // label.save();
-    case 3:
-      // Transfer - tracked in Transfer event
-      break;
-    default:
-      throw new Error(
-        `Unsupported label action number: ${event.params.labelAction}`
-      );
-  }
 }
 
 export function handleOwnershipTransferred(

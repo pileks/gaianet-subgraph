@@ -6,17 +6,7 @@ import {
   beforeAll,
   afterAll,
 } from "matchstick-as/assembly/index";
-import {
-  Address,
-  BigInt,
-  ByteArray,
-  Bytes,
-  log,
-} from "@graphprotocol/graph-ts";
-import { Event_GdnRegistrarApproval } from "../generated/schema";
-import { Approval as ApprovalEvent } from "../generated/GdnRegistrar/GdnRegistrar";
-import { handleApproval } from "../src/gdn-registrar";
-import { createApprovalEvent } from "./gdn-registrar-utils";
+import { BigInt } from "@graphprotocol/graph-ts";
 import { decodeTokenId } from "../src/utils";
 
 // Tests structure (matchstick-as >=0.5.0)
