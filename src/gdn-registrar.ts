@@ -82,6 +82,12 @@ export function handleNftAction(event: NftActionEvent): void {
       renewal.label = Bytes.fromUTF8(event.params.label);
 
       renewal.save();
+
+      // const label = getOrCreateLabel(event.params.label, event.block);
+
+      // label.expiry = event.params.expiry;
+
+      // label.save();
     case 3:
       // Transfer - tracked in Transfer event
       break;

@@ -29,23 +29,34 @@ class TokenLabelAndExpiry {
 export function decodeTokenId(tokenId: BigInt): TokenLabelAndExpiry {
   let encodedData = toBytes(tokenId);
 
+  let cursor = 0;
+
   // Decode label
-  let labelLength = encodedData[0];
+  let labelLength = encodedData[cursor++];
+
   let labelBytes = new ByteArray(labelLength);
   for (let i: u8 = 0; i < labelLength; i++) {
-    labelBytes[i] = encodedData[i + 1];
+    labelBytes[i] = encodedData[cursor++];
   }
   let label = String.UTF8.decode(labelBytes.buffer);
 
   // Decode expiry
-  let expiryStart = 1 + labelLength;
-  let expiryLength = encodedData[expiryStart];
+  let expiryLength = encodedData[cursor++];
+
   let expiryBytes = new Uint8Array(expiryLength);
   for (let i: u8 = 0; i < expiryLength; i++) {
-    expiryBytes[i] = encodedData[expiryStart + 1 + i];
+    expiryBytes[i] = encodedData[cursor++];
   }
 
-  let expiry = BigInt.fromUnsignedBytes(Bytes.fromUint8Array(expiryBytes));
+  let expiry = uInt256BytesToBigInt(expiryBytes);
 
   return new TokenLabelAndExpiry(label, expiry);
+}
+
+function uInt256BytesToBigInt(data: Uint8Array): BigInt {
+  let result = BigInt.zero();
+  for (let i: i32 = 0; i < data.length; i++) {
+    result = result.times(BigInt.fromI32(256)).plus(BigInt.fromI32(data[i]));
+  }
+  return result;
 }

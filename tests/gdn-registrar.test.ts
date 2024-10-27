@@ -6,7 +6,13 @@ import {
   beforeAll,
   afterAll,
 } from "matchstick-as/assembly/index";
-import { Address, BigInt, log } from "@graphprotocol/graph-ts";
+import {
+  Address,
+  BigInt,
+  ByteArray,
+  Bytes,
+  log,
+} from "@graphprotocol/graph-ts";
 import { Event_GdnRegistrarApproval } from "../generated/schema";
 import { Approval as ApprovalEvent } from "../generated/GdnRegistrar/GdnRegistrar";
 import { handleApproval } from "../src/gdn-registrar";
@@ -21,5 +27,21 @@ describe("Describe entity assertions", () => {
 
   afterAll(() => {
     clearStore();
+  });
+
+  test("Token ID decoding", () => {
+    const expectedLabel = "qwencoder";
+    const expectedExpiry = BigInt.fromI64(1759314827);
+
+    // This token ID results in label `qwencoder` and expiry set to 1759314827
+    // It's simply taken from on-chain data as a test example
+    const tokenId = BigInt.fromString(
+      "4271293397964493705563664204118307615286594861559020938379109403644854796288"
+    );
+
+    const tokenInfo = decodeTokenId(tokenId);
+
+    assert.assertTrue(expectedLabel == tokenInfo.label);
+    assert.assertTrue(expectedExpiry.equals(tokenInfo.expiry));
   });
 });

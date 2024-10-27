@@ -26,6 +26,7 @@ yarn-error.log*
 coverage
 coverage.json
 tests/.bin
+tests/.latest.json
 
 # Typechain
 typechain
