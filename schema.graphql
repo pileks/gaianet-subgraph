@@ -116,29 +116,52 @@ type Payment @entity {
   id: Bytes!
 }
 
-type DomainNft @entity {
+type LabelNft @entity {
   id: Bytes!
   tokenId: BigInt!
-  label: String
+  label: String!
+  expiry: BigInt!
   owner: Bytes!
   mintedBlockNumber: BigInt!
   mintedTimestamp: BigInt!
-  burnedBlockNumber: BigInt
-  burnedTimestamp: BigInt
-  ownerHistoryEntries: [DomainNftOwnerHistoryEntry!] @derivedFrom(field: "domainNft")
+  lastUpdatedBlockNumber: BigInt!
+  lastUpdatedTimestamp: BigInt!
+  previousOwners: [LabelNftOwnerHistoryEntry!] @derivedFrom(field: "labelNft")
 }
 
-type DomainNftOwnerHistoryEntry @entity(immutable: true) {
+type LabelNftOwnerHistoryEntry @entity(immutable: true) {
   id: Bytes!
   owner: Bytes! # address
   blockNumber: BigInt!
   timestamp: BigInt!
-  domainNft: DomainNft!
+  labelNft: LabelNft!
 }
 
-type DomainLabel @entity {
-  id: Bytes!
+type Label @entity {
+  id: Bytes! # Bytes.fromUTF8(label)
   label: String!
-  owner: Bytes! # address
-  previousOwners: [Bytes!]!
+  expiry: BigInt!
+  owner: Bytes!
+  lastUpdatedTimestamp: BigInt!
+  lastUpdatedBlockNumber: BigInt!
+  createdTimestamp: BigInt!
+  createdBlockNumber: BigInt!
+  previousOwners: [LabelOwnerHistoryEntry!] @derivedFrom(field: "label")
+  renewals: [LabelRenewal!] @derivedFrom(field: "label")
+}
+
+type LabelOwnerHistoryEntry @entity(immutable: true) {
+  id: Bytes!
+  owner: Bytes!
+  blockNumber: BigInt!
+  timestamp: BigInt!
+  label: Label!
+}
+
+type LabelRenewal @entity(immutable: true) {
+  id: Bytes!
+  expiry: BigInt!
+  timestamp: BigInt!
+  blockNumber: BigInt!
+  label: Label!
 }
